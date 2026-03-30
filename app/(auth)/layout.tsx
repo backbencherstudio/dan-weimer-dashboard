@@ -10,7 +10,7 @@ export default function AuthLayout({
   return (
     <div>
       <Header />
-     <div className="min-h-[calc(100vh-110px)] flex items-center justify-center"> 
+     <div className="min-h-[calc(100vh-174px)] flex items-center justify-center bg-[#f8f8f8]"> 
          {children}
          
      </div>

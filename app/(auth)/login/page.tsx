@@ -1,9 +1,12 @@
+import LoginForm from "@/components/auth/LoginForm";
 import React from "react";
 
 export default function page() {
   return (
     <div>
-      <h1 className="font-industry">Hello</h1>
+  
+
+      <LoginForm/>
     </div>
   );
 }
