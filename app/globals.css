@@ -148,3 +148,4 @@ body {
 .auth-input-label{
   @apply text-[color:var(--Primary-Black,#070707)]  text-base font-medium leading-[160%] tracking-[0.08px] block mb-3
 }
+
