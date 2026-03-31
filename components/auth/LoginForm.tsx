@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,7 +13,10 @@ import PrimaryButton from "../reusable/CustomButton";
 
 // Validation schema
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address").min(1, "Email is required"),
+  email: z
+    .string()
+    .email("Please enter a valid email address")
+    .min(1, "Email is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   rememberMe: z.boolean().optional(),
 });
@@ -42,18 +46,20 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    
+
     try {
       // Handle remember me with localStorage
-      if (data.rememberMe) {
-        localStorage.setItem("rememberedEmail", data.email);
-      } else {
-        localStorage.removeItem("rememberedEmail");
+      if (typeof window !== "undefined") {
+        if (data.rememberMe) {
+          localStorage.setItem("rememberedEmail", data.email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
       }
 
       // Make your API call here
       console.log("Login data:", data);
-      
+
       // Example API call:
       // const response = await fetch("/api/auth/login", {
       //   method: "POST",
@@ -61,9 +67,8 @@ export default function LoginForm() {
       //   body: JSON.stringify(data),
       // });
       // const result = await response.json();
-      
+
       // Handle success (redirect, show toast, etc.)
-      
     } catch (error) {
       console.error("Login error:", error);
       // Handle error (show error message)
@@ -73,13 +78,15 @@ export default function LoginForm() {
   };
 
   // Load remembered email on component mount
-  useState(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    if (rememberedEmail) {
-      setValue("email", rememberedEmail);
-      setValue("rememberMe", true);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const rememberedEmail = localStorage.getItem("rememberedEmail");
+      if (rememberedEmail) {
+        setValue("email", rememberedEmail);
+        setValue("rememberMe", true);
+      }
     }
-  });
+  }, [setValue]);
 
   return (
     <div className="auth-container">
@@ -126,7 +133,9 @@ export default function LoginForm() {
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
@@ -136,7 +145,9 @@ export default function LoginForm() {
             <Checkbox
               className="accent-white data-checked:border-[#FF4000] data-checked:bg-[#FF4000] rounded-full h-5 w-5"
               checked={rememberMe}
-              onCheckedChange={(checked) => setValue("rememberMe", checked as boolean)}
+              onCheckedChange={(checked) =>
+                setValue("rememberMe", checked as boolean)
+              }
             />
             <span className="text-[#4B5563] leading-[160%] tracking-[0.07px] text-sm font-normal">
               Remember me
