@@ -32,13 +32,13 @@ const chartConfig = {
   pending: { label: "Pending", color: "#f59e0b" },
   delayed: { label: "Delayed", color: "#10b981" },
 } satisfies ChartConfig
-
+// border border-{#]
 export default function ShipmentPerformance() {
   return (
-    <Card className="w-full max-w-[726px] border-none shadow-sm">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
+    <Card className="w-full ring-[#EDEDED]!  shadow-sm  rounded-2xl">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
         <div className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Shipment Performance</CardTitle>
+          <CardTitle className="self-stretch text-[color:var(--B,#070707)] font-industry text-xl font-bold leading-[132%] tracking-[0.1px]">Shipment Performance</CardTitle>
           <div className="flex gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <div className="h-2 w-2 rounded-full bg-[#ef4444]" /> Delivered
@@ -54,7 +54,7 @@ export default function ShipmentPerformance() {
             </div>
           </div>
         </div>
-        <button className="flex items-center gap-2 rounded-lg bg-[#ff4d00] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90">
+        <button className="flex items-center gap-2 rounded-lg bg-[#ff4d00] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 font-industry">
           This month <ChevronDown className="h-4 w-4" />
         </button>
       </CardHeader>
