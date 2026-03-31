@@ -100,7 +100,7 @@ export default function RecentShipmentTable() {
           <h2 className="text-2xl font-bold text-[#1e293b] font-industry">
             Recent Shipment Activity
           </h2>
-          <button className="bg-[#FF4D00] hover:bg-[#e64500] text-white px-6 py-2.5 rounded-xl font-bold transition-all font-industry">
+          <button className="bg-[#FF4D00] hover:bg-[#e64500] text-white px-4.5 py-3 rounded-[8px] font-bold transition-all font-industry">
             See All
           </button>
         </div>

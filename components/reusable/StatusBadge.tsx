@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 // Define the available statuses as a type
-export type ShipmentStatus = "En Route" | "Delivered" | "Picked Up";
+export type ShipmentStatus = "En Route" | "Delivered" | "Picked Up" | "At Location";
 
 interface StatusBadgeProps {
   status: ShipmentStatus;
@@ -9,9 +9,10 @@ interface StatusBadgeProps {
 }
 
 const statusStyles: Record<ShipmentStatus, string> = {
-  "En Route": "bg-green-50 text-green-600 border-green-200",
-  "Delivered": "bg-orange-50 text-orange-600 border-orange-200",
+  "En Route": "bg-[#EFFFEF] text-[#06AD06] border-[#06AD06]",
+  Delivered: "bg-orange-50 text-orange-600 border-orange-200",
   "Picked Up": "bg-purple-50 text-purple-600 border-purple-200",
+  "At Location": "bg-blue-50 text-blue-600 border-blue-200",
 };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
@@ -20,7 +21,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       className={cn(
         "inline-flex items-center justify-center px-4 py-1.5 rounded-lg border text-xs font-semibold transition-colors",
         statusStyles[status],
-        className
+        className,
       )}
     >
       {status}
