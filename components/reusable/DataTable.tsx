@@ -25,6 +25,15 @@ interface GenericDataTableProps<T> {
 
 export function GenericDataTable<T>({ columns, data, isLoading, noDataMessage = "No Data Found" }: GenericDataTableProps<T>) {
 
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <TableSkeleton columnCount={columns.length} />
+      </div>
+    );
+  }
+  
   if (data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-4">
@@ -46,13 +55,7 @@ export function GenericDataTable<T>({ columns, data, isLoading, noDataMessage = 
       </div>
     );
   }
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <TableSkeleton columnCount={columns.length} />
-      </div>
-    );
-  }
+
   return (
     <div className="  bg-white overflow-hidden ">
       <Table>

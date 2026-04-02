@@ -34,18 +34,18 @@ export function CustomSelect({
     <Select defaultValue={defaultValue} onValueChange={onValueChange}>
       <SelectTrigger 
         className={cn(
-          "w-[140px] h-[48px] rounded-[14px] border-[#D1D5DB] bg-white px-4 text-base font-medium text-[#64748b] focus:ring-1 focus:ring-orange-500 hover:bg-slate-50 transition-colors",
+          "w-[140px] md:h-[48px] rounded-md border-[#D1D5DB] bg-white px-4 text-base font-medium text-[#64748b] focus:ring-1 focus:ring-orange-500 hover:bg-slate-50 transition-colors",
           className
         )}
       >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className="rounded-xl border-[#D1D5DB]">
+      <SelectContent className="rounded-lg border-[#D1D5DB]">
         {options.map((option) => (
           <SelectItem 
             key={option.value} 
             value={option.value}
-            className="rounded-lg focus:bg-orange-50 focus:text-orange-600"
+            className="rounded-lg focus:bg-orange-50 focus:text-orange-600 py-2"
           >
             {option.label}
           </SelectItem>

@@ -22,7 +22,7 @@ export default function StatsCard({
       className={`flex w-full min-w-[216px] items-start justify-start gap-3 self-stretch rounded-xl border border-solid border-[#EAECF0] bg-white px-4 py-[18px] ${className}`}
     >
       <div
-        className={`flex items-center gap-[6.007px] rounded-[7.809px] p-[6.007px] ${iconBg}`}
+        className={`flex items-center justify-center gap-[6.007px] rounded-[7.809px] p-[6.007px]  ${iconBg}`}
       >
         {icon}
       </div>
