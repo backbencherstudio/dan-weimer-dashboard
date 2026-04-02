@@ -152,3 +152,11 @@ body {
 button {
   cursor: pointer;
 }
+
+.read-only-input{
+  @apply   h-13.5 bg-[#F9FAFB] border border-[#EAECF0] rounded-lg px-4 p-4
+  outline-none
+  focus:outline-none focus:ring-0 focus-visible:ring-0
+  focus-visible:outline-none focus-visible:border-[#EAECF0]
+  ring-0 ring-offset-0;
+}

@@ -1,7 +1,7 @@
-export default function Page() {
+import ContractorsPage from "@/components/pages/contractors";
+
+  export default function Page() {
   return (
-    <div>
-      <h1>contractors</h1>
-    </div>
+    <ContractorsPage />
   )
 }
