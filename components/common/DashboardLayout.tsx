@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Topbar } from "./Topbar";
-import Link from "next/link";
 
 export default function DashboardLayoutComp({
   children,
@@ -42,9 +41,6 @@ export default function DashboardLayoutComp({
           
         </footer>
 
-        {/* <main className="flex-1 overflow-y-auto md:p-6 p-4 bg-black">
-          {children}
-        </main> */}
       </div>
     </div>
   );
