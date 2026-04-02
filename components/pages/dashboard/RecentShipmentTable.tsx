@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/reusable/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ReusablePagination } from "@/components/reusable/ReusablePagination";
 
+
 // 1. Define your Data Type
 type Shipment = {
   id: string;
@@ -20,7 +21,7 @@ type Shipment = {
 
 export default function RecentShipmentActivity() {
   const searchParams = useSearchParams();
-  
+
   // States
   const [data, setData] = useState<Shipment[]>([]);
   const [meta, setMeta] = useState({ totalPages: 0, totalCount: 0 });
@@ -33,8 +34,8 @@ export default function RecentShipmentActivity() {
       productName: i % 2 === 0 ? "Brake Pads Front" : "Oil Filter Premium",
       eta: "08-15-2026 14:30",
       weight: `${(Math.random() * 20).toFixed(1)} kg`,
-      runner: { 
-        name: i % 3 === 0 ? "Jenny Wilson" : "John Dukes", 
+      runner: {
+        name: i % 3 === 0 ? "Jenny Wilson" : "John Dukes",
         initials: "JW",
         avatar: i % 3 === 1 ? "https://github.com/shadcn.png" : undefined
       },
@@ -42,7 +43,7 @@ export default function RecentShipmentActivity() {
       status: i % 3 === 0 ? "En Route" : i % 3 === 1 ? "Delivered" : "Picked Up",
     }));
 
-    const limit = 5;
+    const limit = 8;
     const start = (page - 1) * limit;
     return {
       items: allItems.slice(start, start + limit),
@@ -55,10 +56,10 @@ export default function RecentShipmentActivity() {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      
+
       // Simulating network delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const page = Number(searchParams.get("page")) || 1;
       const { items, totalPages, totalCount } = getFakeData(page);
 
@@ -119,20 +120,27 @@ export default function RecentShipmentActivity() {
         </button>
       </div>
 
-      <div className="min-h-[400px]">
-        <GenericDataTable 
-          columns={columns} 
-          data={data} 
-          isLoading={isLoading} 
+      <div className="min-h-[200px]">
+        <GenericDataTable
+          noDataMessage="No Shipment Activity Found"
+          columns={columns}
+          data={data}
+          isLoading={isLoading}
         />
+
+
       </div>
 
-      <div className="mt-6 border-t border-[#F1F5F9] pt-2">
-        <ReusablePagination 
-          totalPages={meta.totalPages} 
-          totalEntries={meta.totalCount} 
-        />
-      </div>
+      {
+        data.length > 10 && (
+          <div className="mt-6 border-t border-[#F1F5F9] pt-2">
+            <ReusablePagination
+              totalPages={meta.totalPages}
+              totalEntries={meta.totalCount}
+            />
+          </div>
+        )
+      }
     </div>
   );
 }

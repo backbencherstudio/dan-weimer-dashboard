@@ -14,6 +14,9 @@ export default function DashboardLayoutComp({
   const name = "Admin";
   const panelLabel = "Admin Panel";
 
+
+  
+
   return (
     <div className="h-screen flex overflow-hidden">
       <Sidebar
