@@ -6,7 +6,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Loader2 } from "lucide-react";
 import { ReactNode } from "react";
+import { TableSkeleton } from "./TableSkeleton";
 
 export interface Column<T> {
   header: string;
@@ -17,11 +19,23 @@ export interface Column<T> {
 interface GenericDataTableProps<T> {
   columns: Column<T>[];
   data: T[];
+  isLoading?: boolean;
 }
 
-export function GenericDataTable<T>({ columns, data }: GenericDataTableProps<T>) {
+export function GenericDataTable<T>({ columns, data, isLoading }: GenericDataTableProps<T>) {
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <TableSkeleton columnCount={columns.length} />
+      </div>
+    );
+  }
   return (
     <div className="  bg-white overflow-hidden ">
+
+    
+
       <Table>
         <TableHeader className="bg-[#F1F5F9]">
           <TableRow className="hover:bg-transparent border-none">

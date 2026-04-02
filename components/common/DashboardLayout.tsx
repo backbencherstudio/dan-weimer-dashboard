@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Topbar } from "./Topbar";
+import Link from "next/link";
 
 export default function DashboardLayoutComp({
   children,
@@ -32,6 +33,14 @@ export default function DashboardLayoutComp({
         <main className="flex-1 overflow-y-auto md:px-6 px-4 pt-4 md:pt-6  ">
           {children}
         </main>
+
+        <footer>
+          <p>
+            &copy; 2026 Parts Runner. All rights reserved.
+          </p>
+          
+          
+        </footer>
 
         {/* <main className="flex-1 overflow-y-auto md:p-6 p-4 bg-black">
           {children}
