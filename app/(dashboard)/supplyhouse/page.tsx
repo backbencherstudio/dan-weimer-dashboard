@@ -1,7 +1,10 @@
+import SupplyHousePage from "@/components/pages/supplyhouse"
+import { Suspense } from "react"
+
 export default function Page() {
   return (
-    <div>
-      <h1>supplyhouse</h1>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <SupplyHousePage />
+    </Suspense>
   )
 }

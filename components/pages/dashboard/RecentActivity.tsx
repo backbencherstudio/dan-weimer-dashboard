@@ -12,7 +12,7 @@ export default function RecentActivity() {
         <button className="flex w-[86px] justify-center items-center gap-1 [background:var(--primary-orange-orange-500-main,#FF4000)] px-[18px] py-3 rounded-[7.809px] text-[color:var(--W,#FFF)] [font-family:Industry] text-sm font-bold leading-[116%] tracking-[0.07px]"> See All</button>
       </div>
 
-      <div>
+      <div className="w-full">
          <RecentActivities />
       </div>
     </div>
@@ -83,7 +83,7 @@ function ActivityRow({
 }: ActivityItem & { isLast?: boolean }) {
   return (
     <div
-      className={`flex items-start justify-between gap-4 py-5 ${
+      className={`flex items-start justify-between gap-4 py-5 w-full ${
         !isLast ? "border-b border-[#F2DDDA]" : "border-b border-[#F2DDDA]"
       }`}
     >
@@ -113,7 +113,7 @@ function ActivityRow({
 
 function RecentActivities() {
   return (
-    <div className="w-full md:min-w-[560px]  rounded-2xl bg-white ">
+    <div className="w-full   rounded-2xl bg-white w">
       {activities.map((item, index) => (
         <ActivityRow
           key={item.id}

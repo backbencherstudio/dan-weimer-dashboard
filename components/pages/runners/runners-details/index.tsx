@@ -1,31 +1,32 @@
 "use client";
 import { useParams } from 'next/navigation';
 import React, { Suspense } from 'react'
-import ContactorDetailsStats from './ContactorDetailsStats'
-import ContractorProfile from './ContractorProfile'
-import ContractorOrderList from './ContractorOrderList'
+import RunnerDetailsStats from './RunnerDetailsStats';
+import RunnerProfile from './RunnerProfile';
+import RunnerJobList from './RunnerJobList';
 
-function ContractorDetailPage() {
+
+function RunnerDetailPage() {
     const params = useParams();
-    const contractorId = params.id as string;
+    const runnerId = params.id as string;
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <div className='space-y-6'>
-                <h2 className='text-2xl font-bold text-[#070707] leading-[124%] tracking-[0.12px]'>Contractor Details</h2>
+                <h2 className='text-2xl font-bold text-[#070707] leading-[124%] tracking-[0.12px]'>Runner Details</h2>
                 <div>
-                    <ContactorDetailsStats />
+                    <RunnerDetailsStats />
                 </div>
 
                 <div className='p-8 rounded-lg space-y-8 bg-white'>
 
 
                     <div>
-                        <ContractorProfile />
+                            <RunnerProfile />
                     </div>
 
                     <div>
-                        <ContractorOrderList />
+                        <RunnerJobList />
                     </div>
                 </div>
             </div>
@@ -36,7 +37,7 @@ function ContractorDetailPage() {
 export default function ContractorDetails() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <ContractorDetailPage />
+            <RunnerDetailPage />
         </Suspense>
     )
 }

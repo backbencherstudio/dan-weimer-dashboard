@@ -1,10 +1,12 @@
 import DashboardPage from '@/components/pages/dashboard'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export default function page() {
   return (
     <div>
-      <DashboardPage/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DashboardPage />
+      </Suspense>
     </div>
   )
 }

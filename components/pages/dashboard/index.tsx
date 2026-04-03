@@ -42,7 +42,7 @@ export default function DashboardPage() {
           <ShipmentPerformance />
         </div>
 
-        <div>
+        <div className="lg:min-w-[560px]">
           <RecentActivity />
         </div>
       </div>
