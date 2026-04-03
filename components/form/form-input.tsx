@@ -3,8 +3,6 @@
 import { cn } from "@/lib/utils"
 import { Controller, useFormContext } from "react-hook-form"
 
-
-
 // =================== Simple Input ==================
 interface SimpleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string
@@ -18,21 +16,32 @@ export function SimpleInput({
     inputClassName,
     labelClassName,
     containerClassName,
+    readOnly,
     ...props
 }: SimpleInputProps) {
     return (
         <div className={cn("space-y-2", containerClassName)}>
             {label && (
-                <label className={cn("text-sm font-medium leading-none block mb-3", labelClassName)}>
+                <label className={cn("text-sm font-semibold text-[#1E293B] block mb-2", labelClassName)}>
                     {label}
                 </label>
             )}
             <input
                 {...props}
+                readOnly={readOnly}
                 className={cn(
-                    "flex min-h-10 items-center gap-2 self-stretch border px-[15px] py-2.5 rounded-lg border-solid border-[rgba(255,255,255,0.10)] focus:border-[#F6D642]",
-                    "placeholder:text-[#5B5B5B] placeholder:font-[Inter] placeholder:text-sm placeholder:font-normal placeholder:leading-5",
-                    "bg-transparent text-white text-sm outline-none w-full",
+                    // Base heights and padding from your .read-only-input idea
+                    "flex h-[54px] w-full items-center px-4 rounded-xl border border-solid transition-all outline-none",
+                    "text-sm font-medium",
+                    
+                    // Conditional styling based on ReadOnly state
+                    readOnly 
+                        ? "bg-[#F9FAFB] border-[#EAECF0] text-[#111111] cursor-default focus:ring-0 focus:border-[#EAECF0]" 
+                        : "bg-white border-[#D1D5DB] text-[#1E293B] focus:border-[#FF4D00] focus:ring-1 focus:ring-[#FF4D00]/20",
+                    
+                    // Placeholder styling
+                    "placeholder:text-slate-400 placeholder:font-normal",
+                    
                     inputClassName
                 )}
             />
@@ -50,7 +59,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     containerClassName?: string
 }
 
-export default function FormInput({ name, label, labelClassName,  containerClassName, ...props }: FormInputProps) {
+export default function FormInput({ name, label, labelClassName, containerClassName, ...props }: FormInputProps) {
     const context = useFormContext()
     
     if (!context) {
@@ -64,13 +73,21 @@ export default function FormInput({ name, label, labelClassName,  containerClass
             control={control}
             name={name}
             render={({ field, fieldState }) => (
-                <div className={cn("space-y-1", containerClassName)}>
-                    {label && (
-                        <label className={cn("text-sm font-medium mb-3 block", labelClassName)}>{label}</label>
-                    )}
-                    <SimpleInput {...field} {...props} />
+                <div className={cn("w-full", containerClassName)}>
+                    {/* Passes field properties and props down to SimpleInput. 
+                      Label logic is handled inside SimpleInput for consistency. 
+                    */}
+                    <SimpleInput 
+                        {...field} 
+                        {...props} 
+                        label={label} 
+                        labelClassName={labelClassName} 
+                    />
+                    
                     {fieldState.error && (
-                        <p className="text-red-400/80 text-xs font-medium my-1.5">{fieldState.error.message}</p>
+                        <p className="text-red-500 text-xs font-medium mt-1.5 ml-1">
+                            {fieldState.error.message}
+                        </p>
                     )}
                 </div>
             )}
