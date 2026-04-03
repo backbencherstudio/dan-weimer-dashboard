@@ -38,11 +38,11 @@ export default function DashboardPage() {
       <DashboardStatsSection />
 
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-1 ">
+        <div className="flex-1 max-w-[1260px]">
           <ShipmentPerformance />
         </div>
 
-        <div className="lg:min-w-[560px]">
+        <div className="lg:max-w-[560px] flex-1">
           <RecentActivity />
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function PrimaryButton({
     <Button
       disabled={disabled || isLoading}
       className={cn(
-        "flex py-2.5 justify-center items-center gap-2 self-stretch w-full cursor-pointer",
+        "flex py-2.5 justify-center items-center gap-2 self-stretch  cursor-pointer",
         "bg-[#FF4000] hover:bg-[#e03a00] active:bg-[#c93500]",
         "px-0 py-3.5 rounded-lg transition-colors duration-200",
         "text-white text-center text-base font-bold leading-[124%] tracking-[0.08px]",

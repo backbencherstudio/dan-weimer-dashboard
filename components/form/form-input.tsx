@@ -57,6 +57,7 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     inputClassName?: string  
     labelClassName?: string
     containerClassName?: string
+    
 }
 
 export default function FormInput({ name, label, labelClassName, containerClassName, ...props }: FormInputProps) {

@@ -1,7 +1,11 @@
-export default function Page() {
+import { Suspense } from "react";
+import FinancePage from "@/components/pages/finance";
+  export default function Page() {
   return (
     <div>
-      <h1>payments</h1>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FinancePage />
+      </Suspense>
     </div>
   )
 }
