@@ -172,7 +172,7 @@ export default function VerifyOtpForm({ email = "user@example.com", onOtpVerifie
         </div>
 
         {/* BUTTON */}
-        <PrimaryButton type="submit" disabled={isLoading || otpValue?.length !== 6}>
+        <PrimaryButton type="submit" disabled={isLoading || otpValue?.length !== 6} className="py-5.5 w-full">
           {isLoading ? "Verifying..." : "Verify Code"}
         </PrimaryButton>
 

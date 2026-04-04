@@ -166,7 +166,7 @@ export default function RegisterForm() {
         </div>
 
         {/* BUTTON */}
-        <PrimaryButton type="submit" disabled={isLoading} className="mt-4">
+        <PrimaryButton type="submit" disabled={isLoading} className="mt-4 py-5.5 w-full">
           {isLoading ? "Creating account..." : "Sign Up"}
         </PrimaryButton>
 

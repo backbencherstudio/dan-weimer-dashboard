@@ -163,7 +163,7 @@ export default function LoginForm() {
         </div>
 
         {/* BUTTON */}
-        <PrimaryButton type="submit" disabled={isLoading}>
+        <PrimaryButton className="w-full py-5.5" type="submit" disabled={isLoading}>
           {isLoading ? "Logging in..." : "Log in"}
         </PrimaryButton>
 

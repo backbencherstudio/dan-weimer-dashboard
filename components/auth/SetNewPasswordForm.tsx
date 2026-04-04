@@ -169,7 +169,7 @@ export default function SetNewPasswordForm({
           )}
         </div>
 
-        <PrimaryButton type="submit" disabled={isLoading}>
+        <PrimaryButton type="submit" disabled={isLoading} className="py-5.5 w-full">
           {isLoading ? "Resetting Password..." : "Reset Password"}
         </PrimaryButton>
 

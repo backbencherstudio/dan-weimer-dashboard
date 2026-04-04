@@ -94,7 +94,7 @@ export default function ForgotPasswordForm() {
         </div>
 
         {/* BUTTON */}
-        <PrimaryButton type="submit" disabled={isLoading}>
+        <PrimaryButton type="submit" disabled={isLoading} className="py-5.5 w-full">
           {isLoading ? "Sending..." : "Send Reset Link"}
         </PrimaryButton>
 
