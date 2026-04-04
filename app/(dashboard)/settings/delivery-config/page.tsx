@@ -1,7 +1,7 @@
-import React from 'react'
+import DeliveryFeeConfiguration from '@/components/pages/settings/DeliveryFeeConfig'
 
 export default function page() {
   return (
-    <div>delivery-config</div>
+    <DeliveryFeeConfiguration />
   )
 }

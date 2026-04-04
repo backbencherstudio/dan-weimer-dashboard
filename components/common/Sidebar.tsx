@@ -189,7 +189,7 @@ export default function Sidebar({
               href="/settings"
               label=" Settings"
               icon={SidebarIcons.Order}
-              isActive={pathname === "/settings"}
+              isActive={pathname === "/settings" || pathname.startsWith("/settings")}
             />
             <button
               type="button"

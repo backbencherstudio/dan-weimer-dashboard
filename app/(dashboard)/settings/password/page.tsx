@@ -1,7 +1,7 @@
-import React from 'react'
+import ChangePassword from '@/components/pages/settings/Password'
 
 export default function page() {
   return (
-    <div>password</div>
+    <ChangePassword />
   )
 }
