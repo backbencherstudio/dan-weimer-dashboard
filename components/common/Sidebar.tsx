@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LogOut, X } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 
 import { SidebarIcons } from "@/components/icons/SidebarIcons";
 import path from "path";
+import { authService } from "@/services/auth.service";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type SidebarIconType = ComponentType<
@@ -123,6 +124,13 @@ export default function Sidebar({
   onLogout,
 }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    authService.logout();
+    onLogout?.();
+    router.refresh();
+  };
 
   return (
     <>
@@ -193,7 +201,7 @@ export default function Sidebar({
             />
             <button
               type="button"
-              onClick={onLogout}
+              onClick={handleLogout}
               className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 transition-all duration-150 hover:bg-red-50 hover:text-red-500"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 transition-colors group-hover:bg-red-100">

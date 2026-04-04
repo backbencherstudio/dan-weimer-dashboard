@@ -1,6 +1,7 @@
 "use client";
 import { Bell, Menu, User } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/auth.store';
 
 type Props = {
   name: string;
@@ -10,6 +11,14 @@ type Props = {
 export const Topbar = ({ name, onMenuClick }: Props) => {
 
   const [showNotification, setShowNotification] = useState(false);
+
+  const user = useAuthStore((state) => state.user);
+  console.log("Topbar User:", user);
+
+  
+  
+  const email = user?.email || "admin@example.com";
+  const role = user?.type || "Admin";
 
   return (
     <header className="h-19.5 bg-white border-b border-[#EAECF0] flex items-center justify-between md:px-8 px-4  shrink-0">
@@ -42,8 +51,8 @@ export const Topbar = ({ name, onMenuClick }: Props) => {
           </button>
           <div>      
             <div>
-              <p className="text-sm font-semibold leading-[150%]">Josh Cornishbay</p>
-              <p className="text-white-solid text-xs font-normal leading-[150%] text-gray-500">Admin</p>
+              <p className="text-sm font-semibold leading-[150%]">{email}</p>
+              <p className="text-white-solid text-xs font-normal leading-[150%] text-gray-500">{role}</p>
             </div>
           </div>
         </div>

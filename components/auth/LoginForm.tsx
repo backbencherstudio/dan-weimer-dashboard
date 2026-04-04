@@ -10,6 +10,8 @@ import { EyeClosed, EyeIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import PrimaryButton from "../reusable/CustomButton";
+import { useAuthStore } from "@/store/auth.store";
+import { useRouter } from "next/navigation";
 
 // Validation schema
 const loginSchema = z.object({
@@ -24,6 +26,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,8 +39,8 @@ export default function LoginForm() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "admin@example.com",
+      password: "12345678",
       rememberMe: false,
     },
   });
@@ -57,18 +60,8 @@ export default function LoginForm() {
         }
       }
 
-      // Make your API call here
-      console.log("Login data:", data);
-
-      // Example API call:
-      // const response = await fetch("/api/auth/login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(data),
-      // });
-      // const result = await response.json();
-
-      // Handle success (redirect, show toast, etc.)
+      await useAuthStore.getState().login(data.email, data.password);
+      router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       // Handle error (show error message)
