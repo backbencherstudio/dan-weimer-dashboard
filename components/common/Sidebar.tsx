@@ -43,31 +43,31 @@ interface SidebarNavItemProps {
 
 // ── Nav Items ────────────────────────────────────────────────────────────────
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: SidebarIcons.Dashboard },
+  { label: "Dashboard", href: "/dashboard", icon: SidebarIcons.Dashboard },
   {
     label: "Live Operations",
-    href: "/live-operations",
+    href: "/dashboard/live-operations",
     icon: SidebarIcons.Live,
   },
-  { label: "Orders management", href: "/orders", icon: SidebarIcons.Order },
+  { label: "Orders management", href: "/dashboard/orders", icon: SidebarIcons.Order },
   {
     label: "Contractors management",
-    href: "/contractors",
+    href: "/dashboard/contractors",
     icon: SidebarIcons.Contractors,
   },
   {
     label: "Runners management",
-    href: "/runners",
+    href: "/dashboard/runners",
     icon: SidebarIcons.Runners,
   },
   {
     label: "SupplyHouse management",
-    href: "/supplyhouse",
+    href: "/dashboard/supplyhouse",
     icon: SidebarIcons.SupplyHouse,
   },
   {
     label: "Payments & Finance",
-    href: "/payments",
+    href: "/dashboard/payments",
     icon: SidebarIcons.Payment,
   },
 ];
@@ -175,8 +175,8 @@ export default function Sidebar({
         <nav className="flex-1 space-y-3 overflow-y-auto px-3">
           {navItems.map((item) => {
             const isActive =
-            item.href === "/"
-              ? pathname === "/"                // exact match for home
+            item.href === "/dashboard"
+              ? pathname === "/dashboard"                // exact match for home
               : pathname.startsWith(item.href); 
 
             return (
@@ -194,10 +194,10 @@ export default function Sidebar({
         <div>
           <div className="px-3 py-4 space-y-3">
             <NavLink
-              href="/settings"
+              href="/dashboard/settings"
               label=" Settings"
               icon={SidebarIcons.Order}
-              isActive={pathname === "/settings" || pathname.startsWith("/settings")}
+              isActive={pathname === "/dashboard/settings" || pathname.startsWith("/dashboard/settings")}
             />
             <button
               type="button"

@@ -7,9 +7,9 @@ import { SettingsIcon } from "@/components/icons/SettingsIcon";
 import { useState, useEffect } from "react";
 
 const links = [
-  { label: "General", href: "/settings/company-info", icon: SettingsIcon.Info },
-  { label: "Delivery Fee Config", href: "/settings/delivery-config", icon: SettingsIcon.Delivery },
-  { label: "Password", href: "/settings/password", icon: SettingsIcon.Password },
+  { label: "General", href: "/dashboard/settings/company-info", icon: SettingsIcon.Info },
+  { label: "Delivery Fee Config", href: "/dashboard/settings/delivery-config", icon: SettingsIcon.Delivery },
+  { label: "Password", href: "/dashboard/settings/password", icon: SettingsIcon.Password },
 ];
 
 export default function SettingsSidebar() {
