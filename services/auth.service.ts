@@ -12,7 +12,7 @@ export const authService = {
     // ── server side (layout, server components) ───────────────
     // meServer: async (): Promise<User> => {
     //     throw new Error("meServer not yet implemented");
-        
+
     // },
 
     // ── client side (axios) ───────────────────────────────────
@@ -31,4 +31,21 @@ export const authService = {
         cookie.remove(authConfig.cookieName);
         cookie.remove(authConfig.refreshCookie);
     },
+
+
+
+    // forgot password
+    forgotPassword: async (email: string) => {
+        const { data } = await api.post("/auth/forgot-password", { email });
+        return data;
+    },
+
+
+    // reset password ()
+    resetPassword: async (email: string, token: string, password: string) => {
+        const { data } = await api.post("/auth/reset-password", { email, token, password });
+        return data;
+    },
+
+   
 };

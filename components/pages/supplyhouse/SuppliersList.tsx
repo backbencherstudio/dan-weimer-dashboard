@@ -1,115 +1,130 @@
 "use client";
 
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GenericDataTable } from "@/components/reusable/DataTable";
 import { ReusablePagination } from "@/components/reusable/ReusablePagination";
 import { Plus } from "lucide-react";
-import { Supplier, ModalState } from "@/types/supplier.types";
+import { ModalState, Supplier, SupplierTableRow } from "@/types/supplier.types";
 import { useSupplierColumns } from "./getSupplierColumns";
 import CustomModal from "@/components/reusable/CustomModal";
 import SupplierForm from "./SupplierForm";
 import { ConfirmModal } from "@/components/reusable/ConfirmModal";
+import {
+    useSupplyHouses,
+    useDeleteSupplier,
+} from "@/hooks/useSupplyHouse";
 
-
-
-
-
-
-
-
-
-const mockSuppliers: Supplier[] = [
-    { id: "1", name: "Sofa Express", address: "4267 Cherry Tree Drive, Jacksonville, FL 32216", location: "4267 Cherry Tree Drive", street: "4267 Cherry Tree Drive", city: "Jacksonville", zip: "32216", contactNo: "(303) 420-4261", contactPerson: "Daniel Hamilton", status: "Active", ordersFulfilled: 100 },
-    { id: "2", name: "Mostow Co.", address: "2900 Ritter Street, Huntsville, AL 35802", location: "2900 Ritter Street", street: "2900 Ritter Street", city: "Huntsville", zip: "35802", contactNo: "(814) 413-9191", contactPerson: "Lorri Warf", status: "Active", ordersFulfilled: 100 },
-    { id: "3", name: "Ezhe Source", address: "199 Oakway Lane, Woodland Hills, CA 91303", location: "199 Oakway Lane", street: "199 Oakway Lane", city: "Woodland Hills", zip: "91303", contactNo: "(503) 338-2573", contactPerson: "Kathy Pacheco", status: "Active", ordersFulfilled: 100 },
-    { id: "4", name: "J. Brannam", address: "3522 West Fork Street, Missoula, MT 59801", location: "3522 West Fork Street", street: "3522 West Fork Street", city: "Missoula", zip: "59801", contactNo: "(818) 313-7673", contactPerson: "Dennis Callis", status: "Active", ordersFulfilled: 100 },
-];
-
+// {
+//     "id": "cmnmxnrqt000gl077a9mnpz4t",
+//     "name": "ABC Auto Parts Supplier",
+//     "contact_no": "+8801712345678",
+//     "contact_persion": "Md. Rahim Uddin",
+//     "location": "Uttara, Dhaka",
+//     "street": "House 12, Road 7",
+//     "city": "Dhaka",
+//     "zip_code": "1230",
+//     "orders_fulfilled": 0,
+//     "status": "ACTIVE",
+//     "created_at": "2026-04-06T08:33:16.085Z",
+//     "updated_at": "2026-04-06T08:33:16.085Z"
+// }
+const mapSuppliersToTableData = (suppliers: Supplier[] = []): SupplierTableRow[] => {
+    return suppliers.map((supplier, index) => ({
+        id: supplier.id || String(index + 1),
+        name: supplier.name || "N/A",
+        address:
+            // supplier.supplierAddress ||
+            // [supplier.street, supplier.city, supplier.zip].filter(Boolean).join(", "),
+            supplier.street + ", " + supplier.location,
+        location: supplier.location || "N/A",
+        street: supplier.street || "N/A",
+        city: supplier.city || "N/A",
+        zip: supplier.zip_code || "N/A",
+        contactNo: supplier.contact_no || "N/A",
+        contactPerson: supplier.contact_persion || "N/A",
+        status: supplier.status === "ACTIVE" ? "Active" : "Inactive",
+        ordersFulfilled: supplier.orders_fulfilled ?? 0,
+    }));
+};
 
 export default function SuppliersList() {
-    const [data, setData] = useState<Supplier[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-
+    const [page, setPage] = useState(1);
+    const limit = 10;
 
     const [modal, setModal] = useState<ModalState>({
         type: null,
         supplier: null,
+    });
 
-    })
+    const { data, isLoading } = useSupplyHouses(page, limit);
+    const { mutate: deleteSupplier, isPending: isDeleting } = useDeleteSupplier();
 
-    useEffect(() => {
-        const fetchSuppliers = async () => {
-            setIsLoading(true);
-            await new Promise((res) => setTimeout(res, 700));
-
-
-            setData(mockSuppliers);
-            setIsLoading(false);
-        };
-        fetchSuppliers();
-    }, []);
-
+    const suppliers = data?.data || [];
+    const tableData = mapSuppliersToTableData(suppliers);
 
     const closeModal = () => setModal({ type: null, supplier: null });
 
-
-    // add supplier
     const handleAdd = () => {
         setModal({ type: "create", supplier: null });
     };
 
-    // table actions
-    const handleView = (supplier: Supplier) => {
+    const handleView = (supplier: SupplierTableRow) => {
         setModal({ type: "view", supplier });
     };
-    const handleEdit = (supplier: Supplier) => {
+
+    const handleEdit = (supplier: SupplierTableRow) => {
         setModal({ type: "edit", supplier });
     };
-    const handleDelete = (supplier: Supplier) => {
+
+    const handleDelete = (supplier: SupplierTableRow) => {
         setModal({ type: "delete", supplier });
     };
 
     const handleDeleteConfirm = () => {
-        if (!modal.supplier) return;
+        if (!modal.supplier?.id) return;
 
-        alert("Delete Supplier");
-        closeModal();
-        // deleteSupplier(modal.supplier.id, {
-        //     onSuccess: closeModal,
-        // });
+        console.log("modal.supplier.id", modal.supplier.id);
+        console.log(modal.supplier.id);
+        deleteSupplier(modal.supplier.id, {
+            onSuccess: () => {
+                closeModal();
+            },
+        });
     };
 
-    const columns = useSupplierColumns({ onView: handleView, onEdit: handleEdit, onDelete: handleDelete });
-
-    // const { mutate: deleteSupplier, isPending: isDeleting } = useDeleteSupplier();
-
+    const columns = useSupplierColumns({
+        onView: handleView,
+        onEdit: handleEdit,
+        onDelete: handleDelete,
+    });
 
     return (
         <div className="w-full bg-white rounded-2xl border border-[#EDEDED] p-6 shadow-sm">
-            {/* Header with Add Button */}
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-[#1E293B]">Suppliers List</h2>
-                <button onClick={handleAdd} className="flex items-center gap-2 bg-[#FF4D00] hover:bg-[#E64500] text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md font-industry">
+                <button
+                    onClick={handleAdd}
+                    className="flex items-center gap-2 bg-[#FF4D00] hover:bg-[#E64500] text-white px-6 py-3 rounded-xl font-bold transition-all shadow-md font-industry"
+                >
                     <Plus className="h-5 w-5" />
                     Add Supplier
                 </button>
             </div>
 
             <div className="min-h-[400px]">
-                <GenericDataTable columns={columns} data={data} isLoading={isLoading} />
+                <GenericDataTable columns={columns} data={tableData} isLoading={isLoading} />
             </div>
 
             {!isLoading && (
                 <div className="mt-6 border-t pt-2">
-                    <ReusablePagination totalPages={10} totalEntries={40} />
+                    <ReusablePagination
+                        totalPages={data?.meta?.totalPages || 1}
+                        totalEntries={data?.meta?.total || tableData.length}
+                        currentPage={page}
+                        onPageChange={setPage}
+                    />
                 </div>
             )}
-
-
-
-            {/* modal */}
 
             {modal.type === "create" && (
                 <CustomModal open={modal.type === "create"} onClose={closeModal} title="Add Supplier">
@@ -136,7 +151,7 @@ export default function SuppliersList() {
             <ConfirmModal
                 isOpen={modal.type === "delete"}
                 onClose={closeModal}
-                // isPending={isDeleting}
+                isPending={isDeleting}
                 title="Are you sure?"
                 description={`Are you sure you want to delete "${modal.supplier?.name}"? This action cannot be undone.`}
                 confirmLabel="Confirm"
