@@ -11,19 +11,28 @@ interface PaginationProps {
   className?: string;
   currentPage?: number;
   onPageChange?: (page: number) => void;
+  /** When false, page changes only flow through onPageChange (no ?page= in URL). */
+  syncUrl?: boolean;
 }
 
-export function ReusablePagination({ totalPages, totalEntries, className, currentPage = 1, onPageChange }: PaginationProps) {
+export function ReusablePagination({
+  totalPages,
+  totalEntries,
+  className,
+  currentPage = 1,
+  onPageChange,
+  syncUrl = true,
+}: PaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-  // const currentPage = Number(searchParams.get("page")) || 1;
-
 
   const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", page.toString());
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+    if (syncUrl) {
+      const params = new URLSearchParams(searchParams);
+      params.set("page", page.toString());
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
     onPageChange?.(page);
   };
 

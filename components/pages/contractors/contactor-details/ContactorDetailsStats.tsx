@@ -2,19 +2,19 @@ import { StatsIcons } from "@/components/icons/StatsIcon";
 import StatsCard from "@/components/reusable/StatsCard";
 import React from "react";
 
-export default function ContactorDetailsStats() {
+export default function ContactorDetailsStats({ stats }: { stats: any }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
       <StatsCard
         title="Total Orders                    "
-        value="13,245"
+        value={stats?.total_orders}
         prefix="$"
         icon={<StatsIcons.Revenue />}
         iconBg="bg-[#FCE6E6]"
       />
       <StatsCard                        
         title="Lifetime Spend"
-        value="13,245"
+        value={stats?.lifetime_spend}
         prefix="$"
         // icon={<StatsIcons.Orders />}
         icon={<StatsIcons.Orders />}
@@ -22,14 +22,14 @@ export default function ContactorDetailsStats() {
       />
       <StatsCard
         title="In Transit Orders"
-        value="13,245"
+        value={stats?.in_transit_orders}
         prefix="$"
         icon={<StatsIcons.Supplier />}
         iconBg="bg-[#FCE6E6]"
       />
       <StatsCard
         title="Completed Orders"
-        value="13,245"
+        value={stats?.completed_orders}
         prefix="$"
         icon={<StatsIcons.Contractors />}
         iconBg="bg-[#FCE6E6]"

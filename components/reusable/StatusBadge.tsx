@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 // Define the available statuses as a type
-export type ShipmentStatus = "En Route" | "Delivered" | "Picked Up" | "At Location" | "Active" | "Suspend" | "ONLINE" | "OFFLINE" | "Accepted" | "PENDING" | "PICKED_UP" | "DELIVERED" | "EN_ROUTE" | "PENDING";
+export type ShipmentStatus = "En Route" | "Delivered" | "Picked Up" | "At Location" | "Active" | "Suspend" | "ONLINE" | "OFFLINE" | "Accepted" | "PENDING" | "PICKED_UP" | "DELIVERED" | "EN_ROUTE" | "PENDING" | "SUSPENDED" | "ACTIVE" | "RUNNER_NOT_FOUND"  ;
 
 interface StatusBadgeProps {
   status: ShipmentStatus;
@@ -22,6 +22,9 @@ const statusStyles: Record<ShipmentStatus, string> = {
   PICKED_UP: "bg-[#EFFFEF] text-[#06AD06] border-[#06AD06]",
   DELIVERED: "bg-orange-50 text-orange-600 border-orange-200",
   EN_ROUTE: "bg-purple-50 text-purple-600 border-purple-200",
+  SUSPENDED: "bg-[#FFE6E6] text-[#FF4D00] border-[#FF4D00]",
+  ACTIVE: "bg-[#EFFFEF] text-[#06AD06] border-[#06AD06]",
+  RUNNER_NOT_FOUND: "bg-[#FFE6E6] text-[#FF4D00] border-[#FF4D00]",
 };
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
