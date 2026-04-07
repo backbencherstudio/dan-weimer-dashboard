@@ -16,7 +16,6 @@ export default function RunnerDetailsStats({ runnerStats }: { runnerStats: any }
         title="Total Earnings"
         value={runnerStats?.total_earning}
         prefix="$"
-        // icon={<StatsIcons.Orders />}
         icon={<StatsIcons.Orders />}
         iconBg="bg-[#FCE6E6]"
       />

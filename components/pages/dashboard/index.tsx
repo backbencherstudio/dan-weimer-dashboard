@@ -1,3 +1,4 @@
+"use client";
 import CalenderIcon from "@/components/icons/CalenderIcon";
 import { Stats } from "fs";
 import React from "react";
@@ -5,8 +6,42 @@ import DashboardStatsSection from "./StatsCard";
 import RecentActivity from "./RecentActivity";
 import ShipmentPerformance from "./ShipmentPerformance";
 import RecentShipmentTable from "./RecentShipmentTable";
+import { useDashboard } from "@/hooks/useDashboard";
+import { Loader } from "lucide-react";
 
 export default function DashboardPage() {
+  const { data: dashboardData, isLoading } = useDashboard();
+  console.log("dashboardData", dashboardData);
+  // Dashboard Stats Data
+  const shipmentPerformanceData = {
+    chart: dashboardData?.shipment_performance?.chart || []
+  }
+
+  // Recent Activity Data
+  const recentActivityData = {
+    data: dashboardData?.recent_activity || [],
+  }
+
+  // Recent Shipment Activity Data
+  const recentShipmentActivityData = {
+    data: dashboardData?.recent_shipment_activity || [],
+  }
+
+  // Dashboard Stats Data
+  const statsData = {
+    monthly_revenue: dashboardData?.summary?.monthly_revenue || 0,
+    monthly_orders: dashboardData?.summary?.monthly_orders || 0,
+    total_supplier: dashboardData?.summary?.total_supplier || 0,
+    total_contractors: dashboardData?.summary?.total_contractors || 0,
+    total_runners: dashboardData?.summary?.total_runners || 0,
+  }
+
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-full">
+      <Loader className="w-10 h-10 text-orange-500 animate-spin" />
+    </div>
+  }
+
   return (
     <div className="space-y-6">
       {/* title */}
@@ -35,20 +70,20 @@ export default function DashboardPage() {
 
       {/* stats card section */}
 
-      <DashboardStatsSection />
+      <DashboardStatsSection data={statsData} />
 
       <div className="flex flex-col md:flex-row gap-6">
         <div className="flex-1 max-w-[1260px]">
-          <ShipmentPerformance />
+          <ShipmentPerformance data={shipmentPerformanceData} />
         </div>
 
         <div className="lg:max-w-[560px] flex-1">
-          <RecentActivity />
+          <RecentActivity data={recentActivityData} />
         </div>
       </div>
 
 
-    <RecentShipmentTable />    
+      <RecentShipmentTable data={recentShipmentActivityData} />
 
 
 

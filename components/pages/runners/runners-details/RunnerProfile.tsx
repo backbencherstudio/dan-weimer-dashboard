@@ -10,38 +10,29 @@ import { ShipmentStatus } from '@/components/reusable/StatusBadge';
 export default function RunnerProfile({ runnerProfile }: { runnerProfile: any }) {
  
 
-    // {
-    //     "id": "cmn6x84k90004vl98d2mb2qew",
-    //     "user_id": "cmn6x33ym0000vl98y8dc42s2",
-    //     "stripe_account_id": null,
-    //     "vehicle_type": "bike",
-    //     "vehicle_model": "Honda CB Shine",
-    //     "vehicle_identification_number": "1HGCM82633A123456",
-    //     "availability": "ONLINE",
-    //     "total_deliveries": 0,
-    //     "wallet_balance": "0",
-    //     "total_earned": "0",
-    //     "created_at": "2026-03-26T03:36:47.385Z",
-    //     "updated_at": "2026-03-26T08:54:05.964Z",
-    //     "user": {
-    //         "id": "cmn6x33ym0000vl98y8dc42s2",
-    //         "name": "David Doe",
-    //         "email": "david@example.com",
-    //         "phone_number": "5551234367",
-    //         "status": "ACTIVE"
-    //     }
-    // }
+
     console.log(runnerProfile);
     return (
         <section className='flex items-start gap-12 self-stretch border px-[38px] py-8 rounded-2xl border-solid border-[#EAECF0] bg-white'>
             {/* Sidebar Section */}
             <div className="flex flex-col items-center gap-4 min-w-[180px]">
-                <Avatar className="h-[160px] w-[160px]">
-                    <AvatarImage src="" /> {/* Replace with item.image if available */}
-                    <AvatarFallback className="bg-[#FFECE6] text-[#FF4D00] text-5xl font-bold">
-                        {runnerProfile?.user?.name?.split(" ")[0]?.charAt(0) + runnerProfile?.user?.name?.split(" ")[1]?.charAt(0)}
-                    </AvatarFallback>
-                </Avatar>
+            <Avatar className="h-[160px] w-[160px]">
+    <AvatarImage src="" /> {/* Replace with item.image if available */}
+    <AvatarFallback className="bg-[#FFECE6] text-[#FF4D00] text-5xl font-bold">
+        {(() => {
+            const name = runnerProfile?.user?.name || "";
+            const nameParts = name.trim().split(" ");
+            
+            if (nameParts.length === 1) {
+                // Single name: take first two characters or just first character
+                return nameParts[0].slice(0, 2).toUpperCase();
+            } else {
+                // Multiple names: take first character of first and last name
+                return (nameParts[0]?.charAt(0) + nameParts[nameParts.length - 1]?.charAt(0)).toUpperCase();
+            }
+        })()}
+    </AvatarFallback>
+</Avatar>
 
                 <div className="text-center space-y-2">
                     <h3 className="text-xl font-bold text-[#1E293B]">{runnerProfile?.user?.name}</h3>

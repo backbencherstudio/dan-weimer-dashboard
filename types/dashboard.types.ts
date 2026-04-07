@@ -41,11 +41,11 @@ export interface DashboardResponse {
   }
   
   export interface RecentActivityItem {
-    id?: string | number;
-    title?: string;
-    description?: string;
-    time?: string;
     type?: string;
+    title?: string;
+    ref?: string;
+    created_at?: string;
+    time_ago?: string;
   }
   
   export interface RecentShipmentActivityItem {
