@@ -34,7 +34,7 @@ export function CustomSelect({
     <Select defaultValue={defaultValue} onValueChange={onValueChange}>
       <SelectTrigger 
         className={cn(
-          "min-w-[140px] md:h-[48px] rounded-md border-[#D1D5DB] bg-white px-4 text-base font-medium text-[#64748b] focus:ring-1 focus:ring-gray-100 hover:bg-slate-50 transition-colors",
+          "min-w-fit md:h-[48px] rounded-md border-[#D1D5DB] bg-white px-3 text-base font-medium text-[#64748b] focus:ring-1 focus:ring-gray-100 hover:bg-slate-50 transition-colors",
           className
         )}
       >

@@ -7,17 +7,31 @@ import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/reusable/StatusBadge";
 import { ShipmentStatus } from '@/components/reusable/StatusBadge';
 
-export default function RunnerProfile() {
-    // In a real app, these would be passed as props from the backend
-    const runner = {
-        name: "Cala Foods",
-        initials: "BS",
-        mobile: "(208) 555-0112",
-        email: "esther.h@demo.com",
-        address: "4517 Washington Ave. Manchester, Kentucky 39495",
-        status: "Active"
-    };
+export default function RunnerProfile({ runnerProfile }: { runnerProfile: any }) {
+ 
 
+    // {
+    //     "id": "cmn6x84k90004vl98d2mb2qew",
+    //     "user_id": "cmn6x33ym0000vl98y8dc42s2",
+    //     "stripe_account_id": null,
+    //     "vehicle_type": "bike",
+    //     "vehicle_model": "Honda CB Shine",
+    //     "vehicle_identification_number": "1HGCM82633A123456",
+    //     "availability": "ONLINE",
+    //     "total_deliveries": 0,
+    //     "wallet_balance": "0",
+    //     "total_earned": "0",
+    //     "created_at": "2026-03-26T03:36:47.385Z",
+    //     "updated_at": "2026-03-26T08:54:05.964Z",
+    //     "user": {
+    //         "id": "cmn6x33ym0000vl98y8dc42s2",
+    //         "name": "David Doe",
+    //         "email": "david@example.com",
+    //         "phone_number": "5551234367",
+    //         "status": "ACTIVE"
+    //     }
+    // }
+    console.log(runnerProfile);
     return (
         <section className='flex items-start gap-12 self-stretch border px-[38px] py-8 rounded-2xl border-solid border-[#EAECF0] bg-white'>
             {/* Sidebar Section */}
@@ -25,19 +39,19 @@ export default function RunnerProfile() {
                 <Avatar className="h-[160px] w-[160px]">
                     <AvatarImage src="" /> {/* Replace with item.image if available */}
                     <AvatarFallback className="bg-[#FFECE6] text-[#FF4D00] text-5xl font-bold">
-                        {runner.initials}
+                        {runnerProfile?.user?.name?.split(" ")[0]?.charAt(0) + runnerProfile?.user?.name?.split(" ")[1]?.charAt(0)}
                     </AvatarFallback>
                 </Avatar>
 
                 <div className="text-center space-y-2">
-                    <h3 className="text-xl font-bold text-[#1E293B]">{runner.name}</h3>
-                    <StatusBadge status={runner.status as ShipmentStatus} />
+                    <h3 className="text-xl font-bold text-[#1E293B]">{runnerProfile?.user?.name}</h3>
+                    <StatusBadge status={runnerProfile?.availability as ShipmentStatus} />
                 </div>
             </div>
 
             {/* Profile Details Grid */}
             <div className="flex-1 space-y-8">
-                <h2 className="text-2xl font-bold text-[#1E293B]">Contractor Profile</h2>
+                <h2 className="text-2xl font-bold text-[#1E293B]">Runner Profile</h2>
 
                 <div className="grid grid-cols-2 gap-x-6 gap-y-6">
                     {/* Field 1: Name */}
@@ -45,7 +59,7 @@ export default function RunnerProfile() {
                         <Label className="text-sm font-semibold text-[#1E293B]">Contractor Name:</Label>
                         <Input
                             readOnly
-                            value={runner.name}
+                            value={runnerProfile?.user?.name}
                             className="read-only-input"
                         />
                     </div>
@@ -55,17 +69,17 @@ export default function RunnerProfile() {
                         <Label className="text-sm font-semibold text-[#1E293B]">Mobile Number:</Label>
                         <Input
                             readOnly
-                            value={runner.mobile}
+                            value={runnerProfile?.user?.phone_number}
                             className="read-only-input"
                         />
-                    </div>               
+                    </div>
 
                     {/* Field 3: Email */}
                     <div className="space-y-2">
                         <Label className="text-sm font-semibold text-[#1E293B]">Email Address:</Label>
                         <Input
                             readOnly
-                            value={runner.email}
+                            value={runnerProfile?.user?.email}
                             className="read-only-input"
                         />
                     </div>
@@ -75,9 +89,29 @@ export default function RunnerProfile() {
                         <Label className="text-sm font-semibold text-[#1E293B]">Address:</Label>
                         <Input
                             readOnly
-                            value={runner.address}
+                            value={runnerProfile?.user?.address}
                             className="read-only-input"
                         />
+                    </div>
+                </div>
+
+                <div>
+                    <Label className="text-sm font-semibold text-[#1E293B] mb-4 block">Vehicle Information:</Label>
+
+
+                    <div className="grid grid-cols-3 gap-x-6 gap-y-6">
+                        <div className="space-y-2">
+                            <Label className="font-semibold text-[#1E293B]">Vehicle Type:</Label>
+                            <Input readOnly value={runnerProfile?.vehicle_type} className="read-only-input" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-sm font-semibold text-[#1E293B]">Vehicle Model:</Label>
+                            <Input readOnly value={runnerProfile?.vehicle_model} className="read-only-input" />
+                        </div>
+                        <div className="space-y-2">
+                            <Label className="text-sm font-semibold text-[#1E293B]">Vehicle Identification Number:</Label>
+                            <Input readOnly value={runnerProfile?.vehicle_identification_number} className="read-only-input" />
+                        </div>
                     </div>
                 </div>
             </div>
