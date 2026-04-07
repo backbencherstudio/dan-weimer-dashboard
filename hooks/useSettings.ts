@@ -51,3 +51,32 @@ export  const useSetDeliveryFee = () => {
 };  
 
 
+// password change
+export type PasswordChangeBody = {
+    old_password: string;
+    new_password: string;
+}
+
+export const usePasswordChange = () => {
+    return useMutation({
+        mutationFn: (passwordChange: PasswordChangeBody) => api.post("/auth/change-password", passwordChange),
+        onSuccess: (data: any) => {
+            // toast.success("Password changed successfully");
+            if (data?.success) {
+                toast.success("Password changed successfully");
+            } else {
+                // If success is false, even if the status code is 200, show an error
+                toast.error(data?.message || "Failed to change password");
+            }
+        },
+        onError: (error: any) => {
+            // Log the full error to understand its structure
+            console.error(error);
+
+            // Check if the error is coming from the response
+            const errorMessage = error?.response?.data?.message || "Failed to change password";
+            toast.error(errorMessage);
+        },
+    });
+}
+
