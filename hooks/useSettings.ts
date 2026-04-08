@@ -38,7 +38,7 @@ export const useDeliveryFee = () => {
     });
 }
 
-export  const useSetDeliveryFee = () => {
+export const useSetDeliveryFee = () => {
     return useMutation({
         mutationFn: (deliveryFee: DeliveryFee) => api.put("/admin/delivery-fee-config", deliveryFee),
         onSuccess: () => {
@@ -48,7 +48,7 @@ export  const useSetDeliveryFee = () => {
             toast.error(error?.response?.data?.message?.message || "Failed to set delivery fee");
         },
     });
-};  
+};
 
 
 // password change
@@ -80,3 +80,42 @@ export const usePasswordChange = () => {
     });
 }
 
+// profile  
+export type ProfileBody = {
+    image?: File | null;
+
+    name: string;
+    phone_number: string;
+
+    address: string;
+    street: string;
+    city: string;
+    zip_code: string;
+
+}
+
+export const useUpdateProfile = () => {
+    return useMutation({
+        mutationFn: (profile: ProfileBody) => api.patch("/auth/update", profile),
+        onSuccess: (data: any) => {
+            if (data?.success) {
+                toast.success("Profile updated successfully");
+            } else {
+                toast.error(data?.message || "Failed to update profile");
+            }
+        },   
+        onError: (error: any) => {
+            toast.error(error?.response?.data?.message?.message || "Failed to update profile");
+        },   
+    });
+}
+
+
+// {
+//     "success": false,
+//     "message": {
+//         "message": "Unexpected field - profile_image",
+//         "error": "Bad Request",
+//         "statusCode": 400
+//     }
+// }

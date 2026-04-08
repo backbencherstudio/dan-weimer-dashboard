@@ -12,6 +12,7 @@ import { Checkbox } from "../ui/checkbox";
 import PrimaryButton from "../reusable/CustomButton";
 import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
 
 // Validation schema
 const loginSchema = z.object({
@@ -70,6 +71,8 @@ export default function LoginForm() {
     }
   };
 
+  const { error } = useAuth();
+  console.log(error);
   // Load remembered email on component mount
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -88,6 +91,11 @@ export default function LoginForm() {
         description="Glad to see you again. Log in to your account."
       />
 
+      {error && (
+        <div className="text-red-500 text-sm mt-1">
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5 w-full">
         {/* EMAIL */}
         <div>

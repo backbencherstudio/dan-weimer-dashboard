@@ -12,13 +12,14 @@ type AuthState = {
   setUser: (user: User) => void;        // ← set from server
   login:   (email: string, password: string) => Promise<void>;
   logout:  () => Promise<void>;
+  error:   string | null;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
   user:       null,
   isLoading:  false,
   isHydrated: false,
-
+  error:      null,
   // ── called by ZustandHydrator from server data ────────────
   setUser: (user) => set({ user, isHydrated: true }),
 
@@ -35,8 +36,11 @@ export const useAuthStore = create<AuthState>((set) => ({
       const user = await authService.meClient();
       set({ user, isLoading: false, isHydrated: true });
     } catch (err) {
-      set({ isLoading: false });
-      throw err;
+      // set({ isLoading: false });
+      // throw err;
+
+      const message = err instanceof Error ? err.message : "Something went wrong.";
+      set({ isLoading: false, error: message as string });
     }
   },
 

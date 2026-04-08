@@ -8,11 +8,12 @@ export function useAuth() {
   const isHydrated = useAuthStore((s) => s.isHydrated);
   const login      = useAuthStore((s) => s.login);
   const logout     = useAuthStore((s) => s.logout);
-
+  const error      = useAuthStore((s) => s.error);
   return {
     user,
     isLoading,
     isHydrated,
+    error,
     login,
     logout,
     isAuthenticated: !!cookie.get(authConfig.cookieName),

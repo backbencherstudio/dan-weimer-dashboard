@@ -4,12 +4,16 @@ export type User = {
     id:            string;
     name:          string;
     email:         string;
-    avatar:        string | null;
-    country_code:  string;
+    avatar:        string | File | null;
+    location?:      string;
+    street?:        string | null;
+    city?:          string;
+    zip_code?:      string;
+    country_code?:  string;
     phone_number:  string;
     type:          UserType;
-    gender:        string | null;
-    date_of_birth: string | null;
+    gender?:        string | null;
+    date_of_birth?: string | null;
     created_at:    string;
   };
 

@@ -2,12 +2,20 @@ import { authConfig } from "@/config/auth.config";
 import { cookie } from "@/lib/cookie";
 import api from "@/lib/axios";
 import { LoginDto, LoginResponse, MeResponse, User } from "@/types/auth.types";
+import axios from "axios";
 // import { cookies } from "next/headers";
 
 export const authService = {
     login: async (body: LoginDto): Promise<LoginResponse> => {
-        const { data } = await api.post("/auth/login", body);
-        return data;
+        try {
+            const { data } = await api.post("/auth/login", body);
+            return data;
+        } catch (error) {
+            if (axios.isAxiosError(error) && !error.response) {
+                throw new Error("Unable to reach server. Please check your connection.");
+            }
+            throw error;
+        }
     },
     // ── server side (layout, server components) ───────────────
     // meServer: async (): Promise<User> => {
