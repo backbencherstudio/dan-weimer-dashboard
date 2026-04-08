@@ -1,6 +1,8 @@
 "use client";
 import { Bell, Menu, User } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthStore } from '@/store/auth.store';
+import { useAuth } from '@/hooks/use-auth';
 
 type Props = {
   name: string;
@@ -10,6 +12,42 @@ type Props = {
 export const Topbar = ({ name, onMenuClick }: Props) => {
 
   const [showNotification, setShowNotification] = useState(false);
+
+  const user = useAuthStore((state) => state.user);
+  console.log("Topbar User:", user);
+
+  const { user: authUser } = useAuth();
+
+//   console.log("User:", authUser);
+
+//   {
+//     "id": "cmn5yjklv0000vl1or910fpfb",
+//     "created_at": "2026-03-25T11:25:54.836Z",
+//     "updated_at": "2026-04-08T04:26:56.077Z",
+//     "deleted_at": null,
+//     "status": "ACTIVE",
+//     "approved_at": "2026-03-25T11:25:54.834Z",
+//     "email": "admin@example.com",
+//     "name": "B. Cooper",
+//     "password": "$2b$10$0x8SETZ2AkIZXcM1OnvhOeySNH4rjopTrHS9p6HEwAQgl62dSgWSy",
+//     "avatar": null,
+//     "country_code": null,
+//     "phone_number": "(207) 555-0119",
+//     "gender": null,
+//     "date_of_birth": null,
+//     "billing_id": null,
+//     "type": "ADMIN",
+//     "email_verified_at": "2026-03-25T11:25:54.834Z",
+//     "location": "Dhanmondi",
+//     "street": null,
+//     "city": "Dhaka",
+//     "zip_code": "1280"
+// }
+
+  
+  
+  const email = user?.email || "demo@example.com";
+  const role = user?.type || "Demo User";
 
   return (
     <header className="h-19.5 bg-white border-b border-[#EAECF0] flex items-center justify-between md:px-8 px-4  shrink-0">
@@ -42,8 +80,8 @@ export const Topbar = ({ name, onMenuClick }: Props) => {
           </button>
           <div>      
             <div>
-              <p className="text-sm font-semibold leading-[150%]">Josh Cornishbay</p>
-              <p className="text-white-solid text-xs font-normal leading-[150%] text-gray-500">Admin</p>
+              <p className="text-sm font-semibold leading-[150%]">{email}</p>
+              <p className="text-white-solid text-xs font-normal leading-[150%] text-gray-500">{role}</p>
             </div>
           </div>
         </div>

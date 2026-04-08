@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LogOut, X } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 
 import { SidebarIcons } from "@/components/icons/SidebarIcons";
 import path from "path";
+import { authService } from "@/services/auth.service";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type SidebarIconType = ComponentType<
@@ -42,31 +43,31 @@ interface SidebarNavItemProps {
 
 // ── Nav Items ────────────────────────────────────────────────────────────────
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: SidebarIcons.Dashboard },
+  { label: "Dashboard", href: "/dashboard", icon: SidebarIcons.Dashboard },
   {
     label: "Live Operations",
-    href: "/live-operations",
+    href: "/dashboard/live-operations",
     icon: SidebarIcons.Live,
   },
-  { label: "Orders management", href: "/orders", icon: SidebarIcons.Order },
+  { label: "Orders management", href: "/dashboard/orders", icon: SidebarIcons.Order },
   {
     label: "Contractors management",
-    href: "/contractors",
+    href: "/dashboard/contractors",
     icon: SidebarIcons.Contractors,
   },
   {
     label: "Runners management",
-    href: "/runners",
+    href: "/dashboard/runners",
     icon: SidebarIcons.Runners,
   },
   {
     label: "SupplyHouse management",
-    href: "/supplyhouse",
+    href: "/dashboard/supplyhouse",
     icon: SidebarIcons.SupplyHouse,
   },
   {
     label: "Payments & Finance",
-    href: "/payments",
+    href: "/dashboard/payments",
     icon: SidebarIcons.Payment,
   },
 ];
@@ -123,6 +124,13 @@ export default function Sidebar({
   onLogout,
 }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    authService.logout();
+    onLogout?.();
+    router.refresh();
+  };
 
   return (
     <>
@@ -167,8 +175,8 @@ export default function Sidebar({
         <nav className="flex-1 space-y-3 overflow-y-auto px-3">
           {navItems.map((item) => {
             const isActive =
-            item.href === "/"
-              ? pathname === "/"                // exact match for home
+            item.href === "/dashboard"
+              ? pathname === "/dashboard"                // exact match for home
               : pathname.startsWith(item.href); 
 
             return (
@@ -186,14 +194,14 @@ export default function Sidebar({
         <div>
           <div className="px-3 py-4 space-y-3">
             <NavLink
-              href="/settings"
+              href="/dashboard/settings"
               label=" Settings"
               icon={SidebarIcons.Order}
-              isActive={pathname === "/settings" || pathname.startsWith("/settings")}
+              isActive={pathname === "/dashboard/settings" || pathname.startsWith("/dashboard/settings")}
             />
             <button
               type="button"
-              onClick={onLogout}
+              onClick={handleLogout}
               className="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 transition-all duration-150 hover:bg-red-50 hover:text-red-500"
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 transition-colors group-hover:bg-red-100">

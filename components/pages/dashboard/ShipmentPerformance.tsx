@@ -11,29 +11,18 @@ import { Line, LineChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } fro
 import { ChevronDown } from "lucide-react"
 
 // Mock data based on the image trends
-const chartData = [
-  { month: "Jan", delivered: 450, inTransit: 330, pending: 230, delayed: 140 },
-  { month: "Feb", delivered: 460, inTransit: 380, pending: 250, delayed: 135 },
-  { month: "Mar", delivered: 470, inTransit: 340, pending: 240, delayed: 145 },
-  { month: "Apr", delivered: 430, inTransit: 350, pending: 220, delayed: 160 },
-  { month: "May", delivered: 460, inTransit: 360, pending: 260, delayed: 110 },
-  { month: "Jun", delivered: 450, inTransit: 340, pending: 230, delayed: 120 },
-  { month: "Jul", delivered: 490, inTransit: 320, pending: 200, delayed: 95 },
-  { month: "Aug", delivered: 440, inTransit: 370, pending: 220, delayed: 130 },
-  { month: "Sep", delivered: 460, inTransit: 380, pending: 220, delayed: 140 },
-  { month: "Oct", delivered: 510, inTransit: 370, pending: 270, delayed: 85 },
-  { month: "Nov", delivered: 500, inTransit: 330, pending: 250, delayed: 105 },
-  { month: "Dec", delivered: 490, inTransit: 325, pending: 200, delayed: 150 },
-]
+
 
 const chartConfig = {
   delivered: { label: "Delivered", color: "#ef4444" },
-  inTransit: { label: "In Transit", color: "#0ea5e9" },
+  in_transit: { label: "In Transit", color: "#0ea5e9" },
   pending: { label: "Pending", color: "#f59e0b" },
   delayed: { label: "Delayed", color: "#10b981" },
 } satisfies ChartConfig
 // border border-{#]
-export default function ShipmentPerformance() {
+export default function ShipmentPerformance({ data }: { data: any }) {
+
+  const chartData = data?.chart || [];
   return (
     <Card className="w-full ring-[#EDEDED]!  shadow-sm  rounded-2xl">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
@@ -97,8 +86,8 @@ export default function ShipmentPerformance() {
             />
             <Line
               type="monotone"
-              dataKey="inTransit"
-              stroke="var(--color-inTransit)"
+              dataKey="in_transit"
+              stroke="var(--color-in_transit)"
               strokeWidth={2}
               dot={false}
             />

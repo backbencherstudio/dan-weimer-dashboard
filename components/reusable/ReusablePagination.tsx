@@ -9,18 +9,31 @@ interface PaginationProps {
   totalPages: number;
   totalEntries: number;
   className?: string;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
+  /** When false, page changes only flow through onPageChange (no ?page= in URL). */
+  syncUrl?: boolean;
 }
 
-export function ReusablePagination({ totalPages, totalEntries, className }: PaginationProps) {
+export function ReusablePagination({
+  totalPages,
+  totalEntries,
+  className,
+  currentPage = 1,
+  onPageChange,
+  syncUrl = true,
+}: PaginationProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
-  const currentPage = Number(searchParams.get("page")) || 1;
 
   const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("page", page.toString());
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+    if (syncUrl) {
+      const params = new URLSearchParams(searchParams);
+      params.set("page", page.toString());
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }
+    onPageChange?.(page);
   };
 
   const renderPageButtons = () => {
@@ -53,9 +66,9 @@ export function ReusablePagination({ totalPages, totalEntries, className }: Pagi
   return (
     <div className={cn("flex items-center justify-between w-full py-4", className)}>
       <span className="text-sm text-[#64748b]">Showing {totalEntries} entries</span>
-      
+
       <div className="flex items-center gap-2">
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage <= 1}
           className="p-2 text-slate-900 disabled:opacity-30"
@@ -65,7 +78,7 @@ export function ReusablePagination({ totalPages, totalEntries, className }: Pagi
 
         {renderPageButtons()}
 
-        <button 
+        <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
           className="p-2 text-slate-900 disabled:opacity-30"

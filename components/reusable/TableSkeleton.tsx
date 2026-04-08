@@ -1,3 +1,5 @@
+"use client";
+
 import { 
     Table, 
     TableBody, 
@@ -33,8 +35,9 @@ import {
                   <TableCell key={colIndex} className="py-5 first:pl-6 last:pr-6">
                     {/* We randomize the width slightly for a more natural look */}
                     <Skeleton 
-                      className="h-4 bg-slate-100" 
-                      style={{ width: `${Math.floor(Math.random() * (90 - 40 + 1) + 40)}%` }} 
+                      // className="h-4 bg-slate-100" 
+                      // style={{ width: `${Math.floor(Math.random() * (90 - 40 + 1) + 40)}%` }} 
+                      className="h-4 bg-slate-100" style={{ width: "77%" }}
                     />
                   </TableCell>
                 ))}

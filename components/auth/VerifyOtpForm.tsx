@@ -28,7 +28,7 @@ interface VerifyOtpFormProps {
   onOtpVerified?: () => void;
 }
 
-export default function VerifyOtpForm({ email = "user@example.com", onOtpVerified }: VerifyOtpFormProps) {
+export default function   VerifyOtpForm({ email = "", onOtpVerified }: VerifyOtpFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -56,17 +56,7 @@ export default function VerifyOtpForm({ email = "user@example.com", onOtpVerifie
       console.log("Verifying OTP:", data.otp);
       console.log("For email:", email);
       
-      // Example API call:
-      // const response = await fetch("/api/auth/verify-otp", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ email, otp: data.otp }),
-      // });
-      
-      // if (!response.ok) {
-      //   const error = await response.json();
-      //   throw new Error(error.message || "Invalid OTP");
-      // }
+  
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));

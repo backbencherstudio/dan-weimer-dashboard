@@ -9,6 +9,8 @@ import { EyeClosed, EyeIcon, CheckCircle } from "lucide-react";
 import { Input } from "../ui/input";
 import PrimaryButton from "../reusable/CustomButton";
 import AuthFormHeader from "./AuthFormHeader";
+import { authService } from "@/services/auth.service";
+import toast from "react-hot-toast";
 
 // Validation schema
 const setNewPasswordSchema = z
@@ -37,6 +39,9 @@ export default function SetNewPasswordForm({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  
 
   const {
     register,
@@ -58,26 +63,28 @@ export default function SetNewPasswordForm({
       console.log("New password:", data.newPassword);
       console.log("OTP:", otp);
 
-      // Example API call:
-      // const response = await fetch("/api/auth/reset-password", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({
-      //     email,
-      //     otp,
-      //     newPassword: data.newPassword
-      //   }),
-      // });
-
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      setIsSuccess(true);
-
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000);
+      const response = await authService.resetPassword(email, otp, data.newPassword);
+      if (response.success) {
+        setIsSuccess(true);
+        setMessage({
+          type: "success",
+          text: response.message,
+        });
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+      } else {
+        setMessage({
+          type: "error",
+          text: response.message,
+        });
+      }
+     
     } catch (error) {
-      console.error("Password reset error:", error);
+      setMessage({
+        type: "error",
+        text: "Something went wrong. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -115,6 +122,15 @@ export default function SetNewPasswordForm({
       />
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5 w-full">
+        {message && (
+          <div className={`p-3 rounded-md ${
+            message.type === "success" 
+              ? "bg-green-50 border border-green-200 text-green-700" 
+              : "bg-red-50 border border-red-200 text-red-700"
+          }`}>
+            {message.text}
+          </div>
+        )}
         <div>
           <label className="auth-input-label">New Password</label>
           <div className="relative mt-1">
@@ -131,9 +147,9 @@ export default function SetNewPasswordForm({
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer"
             >
               {showNewPassword ? (
-                <EyeClosed className="w-4 md:w-6 h-4 md:h-6" />
-              ) : (
                 <EyeIcon className="w-4 md:w-6 h-4 md:h-6" />
+              ) : (
+                <EyeClosed  className="w-4 md:w-6 h-4 md:h-6" />
               )}
             </button>
           </div>

@@ -9,6 +9,9 @@ import PrimaryButton from "../reusable/CustomButton";
 import AuthFormHeader from "./AuthFormHeader";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
+import toast from "react-hot-toast";
+
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
@@ -35,21 +38,28 @@ export default function ForgotPasswordForm() {
     
     try {
       // API call here
-      console.log("Password reset requested:", data.email);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setMessage({
-        type: "success",
-        text: "Password reset link sent! Check your email.",
-      });
-      reset();
+     
 
-      router.push("/verify-otp?email=" + encodeURIComponent(data.email));
+      const response = await authService.forgotPassword(data.email);
+      // console.log(response); 
 
-      
-      
+    //   {
+    //     "success": false,
+    //     "message": "Account not found"
+    // }
+      if (response.success) {
+        setMessage({
+          type: "success",
+          text: response.message,
+        });
+        reset();
+        router.push("/verify-otp?email=" + encodeURIComponent(data.email));
+      } else {
+        setMessage({
+          type: "error",
+          text: response.message,
+        });
+      }
     } catch (error) {
       setMessage({
         type: "error",

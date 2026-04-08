@@ -1,22 +1,22 @@
 import { Column } from "@/components/reusable/DataTable";
 import { TableActionsIcon } from "@/components/icons/TableActionsIcon";
-import { Supplier } from "@/types/supplier.types";
+import { SupplierTableRow } from "@/types/supplier.types";
 import { cn } from "@/lib/utils";
 
 
 
 
 type Props = {
-  onView: (supplier: Supplier) => void;
-  onEdit: (supplier: Supplier) => void;
-  onDelete: (supplier: Supplier) => void;
+  onView: (supplier: SupplierTableRow) => void;
+  onEdit: (supplier: SupplierTableRow) => void;
+  onDelete: (supplier: SupplierTableRow) => void;
 };
 
 export const useSupplierColumns = ({
   onView,
   onEdit,
   onDelete,
-}: Props): Column<Supplier>[] => [
+}: Props): Column<SupplierTableRow>[] => [
     { header: "Supplier Name", accessorKey: "name" },
     { header: "Supplier Address", accessorKey: "address" },
     { header: "Contact No.", accessorKey: "contactNo" },

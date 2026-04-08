@@ -1,90 +1,80 @@
 import React from "react";
+import {
+  CreditCard,
+  MessageSquare,
+  Package,
+  Star,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
+import type { RecentActivityItem } from "@/types/dashboard.types";
 
-export default function RecentActivity() {
-  return (
-    <div className="min-h-[361px] flex flex-col items-start  flex-[1_0_0] border [background:var(--W,#FFF)] p-4 rounded-2xl border-solid border-[#EDEDED] gap-7">
-
-      <div className="flex items-center justify-between  w-full">
-        <h3 className="text-[color:var(--B,#070707)] [font-family:Industry] text-xl font-bold leading-[132%] tracking-[0.1px]">
-          Recent Activity
-        </h3>
-
-        <button className="flex w-[86px] justify-center items-center gap-1 [background:var(--primary-orange-orange-500-main,#FF4000)] px-[18px] py-3 rounded-[7.809px] text-[color:var(--W,#FFF)] [font-family:Industry] text-sm font-bold leading-[116%] tracking-[0.07px]"> See All</button>
-      </div>
-
-      <div className="w-full">
-         <RecentActivities />
-      </div>
-    </div>
-  );
-}
-
-
-
-import { Star, Trophy, CreditCard, MessageSquare } from "lucide-react";
-
-type ActivityItem = {
-  id: number;
-  title: string;
-  orderId?: string;
-  time: string;
-  icon: React.ElementType;
-  iconColor: string;
-  iconBg: string;
+type RecentActivityProps = {
+  data: { data?: RecentActivityItem[] };
 };
 
-const activities: ActivityItem[] = [
-  {
-    id: 1,
-    title: "Runner Alex accepted Job",
-    orderId: "VTY7162E",
-    time: "2 min ago",
-    icon: Star,
+function getActivityVisual(type: string | undefined): {
+  Icon: LucideIcon;
+  iconColor: string;
+  iconBg: string;
+} {
+  const t = (type || "").toLowerCase();
+  if (t.includes("payment") || t.includes("invoice")) {
+    return {
+      Icon: CreditCard,
+      iconColor: "text-cyan-600",
+      iconBg: "bg-cyan-50",
+    };
+  }
+  if (t.includes("delivery") || t.includes("shipment")) {
+    return {
+      Icon: Package,
+      iconColor: "text-emerald-500",
+      iconBg: "bg-emerald-50",
+    };
+  }
+  if (t.includes("runner") || t.includes("job") || t.includes("complete")) {
+    return {
+      Icon: Trophy,
+      iconColor: "text-emerald-500",
+      iconBg: "bg-emerald-50",
+    };
+  }
+  if (t.includes("message") || t.includes("chat")) {
+    return {
+      Icon: MessageSquare,
+      iconColor: "text-orange-500",
+      iconBg: "bg-orange-50",
+    };
+  }
+  return {
+    Icon: Star,
     iconColor: "text-sky-500",
     iconBg: "bg-sky-50",
-  },
-  {
-    id: 2,
-    title: "Delivery completed in 27 mins",
-    orderId: "VTY7162E",
-    time: "15 min ago",
-    icon: Trophy,
-    iconColor: "text-emerald-500",
-    iconBg: "bg-emerald-50",
-  },
-  {
-    id: 3,
-    title: "Invoice paid by Acme HVAC",
-    orderId: "VTY7162E",
-    time: "20 min ago",
-    icon: CreditCard,
-    iconColor: "text-cyan-600",
-    iconBg: "bg-cyan-50",
-  },
-  {
-    id: 4,
-    title: "Runner Sarah Chen went online",
-    orderId: "-",
-    time: "30 min ago",
-    icon: MessageSquare,
-    iconColor: "text-orange-500",
-    iconBg: "bg-orange-50",
-  },
-];
+  };
+}
 
 function ActivityRow({
   title,
-  orderId,
+  refLabel,
   time,
   icon: Icon,
   iconColor,
   iconBg,
   isLast = false,
-}: ActivityItem & { isLast?: boolean }) {
+}: {
+  title: string;
+  refLabel: string;
+  time: string;
+  icon: LucideIcon;
+  iconColor: string;
+  iconBg: string;
+  isLast?: boolean;
+}) {
   return (
     <div
       className={`flex items-start justify-between gap-4 py-5 w-full ${
-        !isLast ? "border-b border-[#F2DDDA]" : "border-b border-[#F2DDDA]"
+        !isLast ? "border-b border-[#F2DDDA]" : ""
       }`}
     >
       <div className="flex min-w-0 items-start gap-4">
@@ -99,7 +89,7 @@ function ActivityRow({
             {title}
           </h3>
           <p className="mt-1 text-[15px] font-normal leading-[150%] text-[#7B7B7B]">
-            ID: {orderId || "-"}
+            {refLabel}
           </p>
         </div>
       </div>
@@ -111,16 +101,65 @@ function ActivityRow({
   );
 }
 
-function RecentActivities() {
+function RecentActivities({ items }: { items: RecentActivityItem[] }) {
+  if (items.length === 0) {
+    return (
+      <p className="py-8 text-center text-[15px] text-[#7B7B7B]">
+        No recent activity yet.
+      </p>
+    );
+  }
+
   return (
-    <div className="w-full   rounded-2xl bg-white w">
-      {activities.map((item, index) => (
-        <ActivityRow
-          key={item.id}
-          {...item}
-          isLast={index === activities.length - 1}
-        />
-      ))}
+    <div className="w-full rounded-2xl bg-white">
+      {items?.slice(0, 4).map((item, index) => {
+        const { Icon, iconColor, iconBg } = getActivityVisual(item.type);
+        const title = item.title?.trim() || "Activity";
+        const refLabel = item.ref?.trim() ? item.ref : "—";
+        const time =
+          item.time_ago?.trim() ||
+          (item.created_at
+            ? new Date(item.created_at).toLocaleString()
+            : "—");
+
+        return (
+          <ActivityRow
+            key={`${item.ref ?? "activity"}-${item.created_at ?? index}`}
+            title={title}
+            refLabel={refLabel}
+            time={time}
+            icon={Icon}
+            iconColor={iconColor}
+            iconBg={iconBg}
+            isLast={index === items.length - 1}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+export default function RecentActivity({ data }: RecentActivityProps) {
+  const activities = data?.data ?? [];
+
+  return (
+    <div className="min-h-[361px] flex flex-col items-start flex-[1_0_0] border [background:var(--W,#FFF)] p-4 rounded-2xl border-solid border-[#EDEDED] gap-7">
+      <div className="flex items-center justify-between w-full">
+        <h3 className="text-[color:var(--B,#070707)] [font-family:Industry] text-xl font-bold leading-[132%] tracking-[0.1px]">
+          Recent Activity
+        </h3>
+
+        <button
+          type="button"
+          className="flex w-[86px] justify-center items-center gap-1 [background:var(--primary-orange-orange-500-main,#FF4000)] px-[18px] py-3 rounded-[7.809px] text-[color:var(--W,#FFF)] [font-family:Industry] text-sm font-bold leading-[116%] tracking-[0.07px]"
+        >
+          See All
+        </button>
+      </div>
+
+      <div className="w-full">
+        <RecentActivities items={activities} />
+      </div>
     </div>
   );
 }

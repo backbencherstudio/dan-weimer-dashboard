@@ -7,15 +7,18 @@ import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/reusable/StatusBadge";
 import { ShipmentStatus } from '@/components/reusable/StatusBadge';
 
-export default function ContractorProfile() {
+export default function ContractorProfile({ contractorData }: { contractorData: any }) {
     // In a real app, these would be passed as props from the backend
+
+    // console.log(contractorData);
+
     const contractor = {
-        name: "Cala Foods",
-        initials: "BS",
-        mobile: "(208) 555-0112",
-        email: "esther.h@demo.com",
-        address: "4517 Washington Ave. Manchester, Kentucky 39495",
-        status: "Active"
+        name: contractorData?.company_name,
+        initials: contractorData?.company_name?.split(" ")[0]?.charAt(0) + contractorData?.company_name?.split(" ")[1]?.charAt(0),
+        mobile: contractorData?.user?.phone_number,
+        email: contractorData?.user?.email,
+        address: contractorData?.business_address,
+        status: contractorData?.user?.status,
     };
 
     return (
@@ -58,7 +61,7 @@ export default function ContractorProfile() {
                             value={contractor.mobile}
                             className="read-only-input"
                         />
-                    </div>               
+                    </div>
 
                     {/* Field 3: Email */}
                     <div className="space-y-2">

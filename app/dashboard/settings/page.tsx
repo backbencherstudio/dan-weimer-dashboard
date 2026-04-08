@@ -3,5 +3,5 @@ import React from 'react'
 
 
 export default function page() {
-  return redirect("/settings/company-info")
+  return redirect("/dashboard/settings/company-info")
 }

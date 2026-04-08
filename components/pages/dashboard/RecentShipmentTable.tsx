@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { Column, GenericDataTable } from "@/components/reusable/DataTable";
-import { StatusBadge } from "@/components/reusable/StatusBadge";
+import { ShipmentStatus, StatusBadge } from "@/components/reusable/StatusBadge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ReusablePagination } from "@/components/reusable/ReusablePagination";
+import { formatCurrency } from "@/lib/utils";
 
 
-// 1. Define your Data Type
 type Shipment = {
   id: string;
   productName: string;
@@ -16,72 +14,71 @@ type Shipment = {
   weight: string;
   runner: { name: string; avatar?: string; initials: string };
   price: string;
-  status: "En Route" | "Delivered" | "Picked Up";
+  status: ShipmentStatus;
 };
 
-export default function RecentShipmentActivity() {
-  const searchParams = useSearchParams();
+type ApiShipment = {
+  order_no: string;
+  product_name: string;
+  eta_date_time: string;
+  weight_kg: number;
+  runner_name: string;
+  price: number;
+  status: string;
+};
 
-  // States
-  const [data, setData] = useState<Shipment[]>([]);
-  const [meta, setMeta] = useState({ totalPages: 0, totalCount: 0 });
-  const [isLoading, setIsLoading] = useState(true);
+const formatStatus = (status: string): ShipmentStatus => {
+  if (status === "ACCEPTED") return "Accepted";
+  if (status === "PICKED_UP") return "PICKED_UP";
+  if (status === "DELIVERED") return "DELIVERED";
+  if (status === "EN_ROUTE") return "EN_ROUTE";
+  if (status === "RUNNER_NOT_FOUND") return "RUNNER_NOT_FOUND";
+  return "PENDING";
+};
 
-  // 2. Mock Data Generator (Simulates your Backend API)
-  const getFakeData = (page: number) => {
-    const allItems: Shipment[] = Array.from({ length: 50 }).map((_, i) => ({
-      id: `VTY${7000 + i}E`,
-      productName: i % 2 === 0 ? "Brake Pads Front" : "Oil Filter Premium",
-      eta: "08-15-2026 14:30",
-      weight: `${(Math.random() * 20).toFixed(1)} kg`,
-      runner: {
-        name: i % 3 === 0 ? "Jenny Wilson" : "John Dukes",
-        initials: "JW",
-        avatar: i % 3 === 1 ? "https://github.com/shadcn.png" : undefined
-      },
-      price: `$${(1000 + i * 10).toLocaleString()}`,
-      status: i % 3 === 0 ? "En Route" : i % 3 === 1 ? "Delivered" : "Picked Up",
-    }));
+const formatEta = (isoDate: string) =>
+  new Date(isoDate).toLocaleString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-    const limit = 8;
-    const start = (page - 1) * limit;
-    return {
-      items: allItems.slice(start, start + limit),
-      totalPages: Math.ceil(allItems.length / limit),
-      totalCount: allItems.length
-    };
-  };
+const getInitials = (name: string) => {
+  if (!name || name === "-") return "--";
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
 
-  // 3. Effect to "Fetch" Data
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
+export default function RecentShipmentActivity({ data }: { data: { data?: ApiShipment[] } }) {
+  const shipments = useMemo<Shipment[]>(
+    () =>
+      (data?.data ?? []).map((item) => ({
+        id: item.order_no || "-",
+        productName: item.product_name || "-",
+        eta: formatEta(item.eta_date_time),
+        weight: `${item.weight_kg ?? 0} kg`,
+        runner: {
+          name: item.runner_name || "-",
+          initials: getInitials(item.runner_name || "-"),
+          avatar: undefined,
+        },
+        price: formatCurrency(String(item.price ?? 0)),
+        status: formatStatus(item.status),
+      })),
+    [data]
+  );
 
-      // Simulating network delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      const page = Number(searchParams.get("page")) || 1;
-      const { items, totalPages, totalCount } = getFakeData(page);
-
-      /* LATER: Replace the lines above with your real API:
-         const res = await fetch(`/api/admin/runner?page=${page}`);
-         const { data, totalPages, totalCount } = await res.json();
-      */
-
-      setData(items);
-      setMeta({ totalPages, totalCount });
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [searchParams]);
-
-  // 4. Columns Configuration
   const columns: Column<Shipment>[] = [
     {
       header: "Order No.",
       accessorKey: "id",
-      render: (item) => <span className="text-[#4A4C56] font-medium">ID: {item.id}</span>,
+      render: (item) => <span className="text-[#4A4C56] font-medium">{item.id}</span>,
     },
     { header: "Product Name", accessorKey: "productName" },
     { header: "ETA Date & Time", accessorKey: "eta" },
@@ -124,23 +121,10 @@ export default function RecentShipmentActivity() {
         <GenericDataTable
           noDataMessage="No Shipment Activity Found"
           columns={columns}
-          data={data}
-          isLoading={isLoading}
+          data={shipments}
+          isLoading={false}
         />
-
-
       </div>
-
-      {
-        data.length > 10 && (
-          <div className="mt-6 border-t border-[#F1F5F9] pt-2">
-            <ReusablePagination
-              totalPages={meta.totalPages}
-              totalEntries={meta.totalCount}
-            />
-          </div>
-        )
-      }
     </div>
   );
 }
